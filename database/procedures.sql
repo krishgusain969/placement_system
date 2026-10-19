@@ -1,10 +1,13 @@
 -- Placement Management System - Stored Procedures & Functions
+-- This file contains all reusable database logic for eligibility checks,
+-- student selection rules, and enforcement of placement constraints.
 
 USE placement_system;
 
 DELIMITER $$
 
--- Eligibility check function (returns BOOLEAN)
+-- Checks whether a student is eligible to apply for a given job.
+-- Validates academic, backlog, deadline, department, and placement status rules.
 CREATE FUNCTION is_eligible(p_student INT, p_job INT)
 RETURNS BOOLEAN
 READS SQL DATA
@@ -23,7 +26,8 @@ BEGIN
     );
 END$$
 
--- Tier rule: placed in lower tier can apply to higher tier only
+-- Ensures the student can only move to a job tier that is allowed by
+-- the current placement tier progression rule.
 CREATE FUNCTION check_tier_rule(p_student INT, p_job INT)
 RETURNS BOOLEAN
 READS SQL DATA
@@ -58,8 +62,8 @@ BEGIN
     RETURN FALSE;
 END$$
 
--- Transactional procedure: select a student (ACID demo)
--- Rolls back if any step fails
+-- Selects a student for a job offer in a single transactional flow.
+-- The operation is wrapped in a transaction so any failure triggers rollback.
 CREATE PROCEDURE select_student(
     IN p_app_id INT,
     IN p_package DECIMAL(6,2)
@@ -104,7 +108,8 @@ BEGIN
     COMMIT;
 END$$
 
--- Insert trigger for blocking second offer (alternative approach)
+-- Prevents duplicate offers by rejecting any insertion that would create
+-- a second selection for the same student.
 CREATE TRIGGER before_selection_insert
 BEFORE INSERT ON selection
 FOR EACH ROW
