@@ -4,8 +4,14 @@ __pycache__/
 *.sqlite3
 .env
 .venv/
+venv/
 node_modules/
 dist/
 build/
 *.log
 .DS_Store
+.pytest_cache/
+os_lab/bin/*
+os_lab/output/*.json
+database/seed_generated.sql
+

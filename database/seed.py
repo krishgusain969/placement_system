@@ -58,8 +58,11 @@ def generate_students(n=200):
     for i in range(n):
         dept_code = random.choice(dept_keys)
         dept_idx = dept_keys.index(dept_code) + 1  # 1-based for FK
-        name = fake.name()
-        email = f"{name.lower().replace(' ', '.')}@student.edu"
+        first_name = fake.first_name()
+        last_name = fake.last_name()
+        name = f"{first_name} {last_name}"
+        clean_email_prefix = f"{first_name.lower()}.{last_name.lower()}".replace("'", "").replace(" ", ".")
+        email = f"{clean_email_prefix}_{i+1}@student.edu"
         cgpa = round(random.uniform(6.0, 9.8), 2)
         backlogs = random.choices([0, 1, 2, 3, 4], weights=[50, 25, 15, 7, 3])[0]
         skills = ", ".join(random.sample(skills_pool[dept_code], k=random.randint(2, 5)))
@@ -192,9 +195,11 @@ def generate_sql():
     lines.append("-- Students (200)")
     lines.append("INSERT INTO student (name, email, dept_id, cgpa, backlogs, skills, is_placed) VALUES")
     for i, s in enumerate(students):
+        clean_name = s['name'].replace("'", "''")
+        clean_skills = s['skills'].replace("'", "''")
         lines.append(
-            f"  ('{s['name']}', '{s['email']}', {s['dept_id']}, {s['cgpa']}, "
-            f"{s['backlogs']}, '{s['skills']}', FALSE)"
+            f"  ('{clean_name}', '{s['email']}', {s['dept_id']}, {s['cgpa']}, "
+            f"{s['backlogs']}, '{clean_skills}', FALSE)"
             + (";" if i == len(students) - 1 else ",")
         )
     lines.append("")

@@ -65,6 +65,16 @@ CREATE TABLE application (
     FOREIGN KEY (job_id) REFERENCES job(job_id)
 );
 
+-- Audit log table (tracks application status transitions)
+CREATE TABLE audit_log (
+    log_id INT AUTO_INCREMENT PRIMARY KEY,
+    app_id INT NOT NULL,
+    old_status VARCHAR(20),
+    new_status VARCHAR(20),
+    changed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (app_id) REFERENCES application(app_id) ON DELETE CASCADE
+);
+
 -- Selection table (one application -> 0 or 1 selection)
 CREATE TABLE selection (
     selection_id INT AUTO_INCREMENT PRIMARY KEY,

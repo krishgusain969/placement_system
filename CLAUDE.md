@@ -41,3 +41,4 @@ placement-system/
 - **Week 4**: OS module in C (scheduler, sync, deadlock); CLI tests
 - **Week 5**: OS Lab UI; connect POST /applications to queue; reports + charts
 - **Week 6**: Testing, bug fixes, README, report, viva practice
+- **Docker**: `docker compose up --build` launches MySQL 8, FastAPI backend (with C OS lab compiled), and Nginx React frontend.
