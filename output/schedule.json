@@ -1,0 +1,8 @@
+{
+  "algorithm": "FCFS",
+  "processes_count": 5,
+  "average_waiting_time": 8.20,
+  "average_turnaround_time": 13.40,
+  "gantt": [{"pid": 1, "start": 0, "end": 5, "duration": 5}, {"pid": 2, "start": 5, "end": 8, "duration": 3}, {"pid": 3, "start": 8, "end": 16, "duration": 8}, {"pid": 4, "start": 16, "end": 22, "duration": 6}, {"pid": 5, "start": 22, "end": 26, "duration": 4}],
+  "processes": [{"pid": 1, "burst": 5, "priority": 2, "waiting": 0, "turnaround": 5, "start": 0, "finish": 5}, {"pid": 2, "burst": 3, "priority": 1, "waiting": 4, "turnaround": 7, "start": 5, "finish": 8}, {"pid": 3, "burst": 8, "priority": 1, "waiting": 6, "turnaround": 14, "start": 8, "finish": 16}, {"pid": 4, "burst": 6, "priority": 3, "waiting": 13, "turnaround": 19, "start": 16, "finish": 22}, {"pid": 5, "burst": 4, "priority": 2, "waiting": 18, "turnaround": 22, "start": 22, "finish": 26}]
+}

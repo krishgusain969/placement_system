@@ -70,13 +70,13 @@ CREATE PROCEDURE select_student(
 )
 MODIFIES SQL DATA
 BEGIN
+    DECLARE v_student_id INT;
+
     DECLARE EXIT HANDLER FOR SQLEXCEPTION
     BEGIN
         ROLLBACK;
         RESIGNAL;
     END;
-
-    DECLARE v_student_id INT;
 
     START TRANSACTION;
 

@@ -1,0 +1,23 @@
+{
+  "threads": 5,
+  "initial_seats": 1,
+  "simulations": 100,
+  "no_lock": {
+    "final_seats_range": [0, 0],
+    "race_condition_hits": 0,
+    "results": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  },
+  "with_mutex": {
+    "race_condition_hits": 0,
+    "results": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  },
+  "with_semaphore": {
+    "race_condition_hits": 0,
+    "results": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  },
+  "conclusion": {
+    "no_lock": "With 5 threads and 1 seats, race condition observed in 0/100 simulations (0%). Seats went negative!",
+    "with_mutex": "Mutex ensures atomic access - 0 race condition hits.",
+    "with_semaphore": "Semaphore (binary) also ensures correctness."
+  }
+}

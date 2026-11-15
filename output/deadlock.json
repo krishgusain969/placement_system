@@ -1,0 +1,5 @@
+{
+  "is_safe": true,
+  "safe_sequence": ["P1", "P3", "P4", "P0", "P2"],
+  "request_granted": true
+}

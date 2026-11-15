@@ -1,0 +1,56 @@
+version: '3.8'
+
+services:
+  db:
+    image: mysql:8.0
+    container_name: placement_mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: placement_system
+      MYSQL_USER: placement_user
+      MYSQL_PASSWORD: placement_password
+    ports:
+      - "3307:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+      # Mount schema and scripts for automated DB initialization
+      - ./database/schema.sql:/docker-entrypoint-initdb.d/01_schema.sql:ro
+      - ./database/procedures.sql:/docker-entrypoint-initdb.d/02_procedures.sql:ro
+      - ./database/triggers.sql:/docker-entrypoint-initdb.d/03_triggers.sql:ro
+      - ./database/views.sql:/docker-entrypoint-initdb.d/04_views.sql:ro
+      - ./database/seed.sql:/docker-entrypoint-initdb.d/05_seed.sql:ro
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "placement_user", "-pplacement_password"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    container_name: placement_backend
+    restart: always
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      - DB_URL=mysql+pymysql://placement_user:placement_password@db:3306/placement_system
+      - SECRET_KEY=placement_secret_jwt_key_2026
+    ports:
+      - "8000:8000"
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: placement_frontend
+    restart: always
+    depends_on:
+      - backend
+    ports:
+      - "80:80"
+
+volumes:
+  db_data:
